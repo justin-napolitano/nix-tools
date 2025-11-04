@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cat > flake.nix <<'FLAKE'
+{
+  description = "Workstation (zsh+p10k, nvim, LSPs, CLIs)";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    home-manager = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
+  };
+  outputs = { self, nixpkgs, home-manager, ... }: let
+    mkPkgs = system: import nixpkgs { inherit system; };
+    mkHomeCfg = { system, username, homeDir }:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = mkPkgs system;
+        modules = [ ./home/common.nix (if system == "x86_64-darwin" || system == "aarch64-darwin" then ./home/darwin.nix else ./home/linux.nix) { home.username = username; home.homeDirectory = homeDir; } ];
+      };
+  in {
+    devShells = {
+      x86_64-linux.default = let pkgs = mkPkgs "x86_64-linux"; in pkgs.mkShell {
+        packages = with pkgs; [ bashInteractive gnumake coreutils gnused gawk findutils git curl wget jq unzip openssh neovim tmux lazygit eza bat fd ripgrep fzf tree httpie htop python312 python312Packages.pip nodejs_22 nodePackages.prettier nodePackages.typescript-language-server pyright bash-language-server lua-language-server yaml-language-server marksman shellcheck nixfmt-classic tree-sitter kubectl terraform awscli2 ];
+        shellHook = ''
+          export NPM_CONFIG_PREFIX="$PWD/.npm-global"; export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          export PIPX_HOME="$PWD/.pipx"; export PIPX_BIN_DIR="$PWD/.pipx/bin"; export PATH="$PIPX_BIN_DIR:$PATH"
+          export ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+          if [ -f "$HOME/.openai_api_key" ]; then . "$HOME/.openai_api_key"; elif [ -f ".secrets/openai_api_key" ]; then export OPENAI_API_KEY="$(cat .secrets/openai_api_key)"; fi
+          echo "Dev shell ready"
+        '';
+      };
+      aarch64-linux.default = let pkgs = mkPkgs "aarch64-linux"; in pkgs.mkShell { inherit (self.devShells.x86_64-linux.default) packages shellHook; };
+      x86_64-darwin.default = let pkgs = mkPkgs "x86_64-darwin"; in pkgs.mkShell { inherit (self.devShells.x86_64-linux.default) packages shellHook; };
+      aarch64-darwin.default = let pkgs = mkPkgs "aarch64-darwin"; in pkgs.mkShell { inherit (self.devShells.x86_64-linux.default) packages shellHook; };
+    };
+    homeConfigurations = { };
+  };
+}
+FLAKE
+echo "[write-flake] OK"

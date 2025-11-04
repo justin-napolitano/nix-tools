@@ -1,0 +1,71 @@
+{ config, pkgs, ... }:
+{
+  programs.home-manager.enable = true;
+  home.stateVersion = "24.05";
+
+  programs.zsh.envExtra = ''
+    export ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+    ''; 
+
+  programs.zsh = {
+    enable = true;
+
+    # Use OMZ but only for the common plugins; HM will provide autosuggestions/syntax-highlighting
+    oh-my-zsh = {
+      enable = true;
+      theme = "powerlevel10k/powerlevel10k";
+      plugins = [ "git" "fzf" "z" ];
+    };
+
+    # Use the new option (deprecation fix)
+    initContent = ''
+      if [[ -f "$HOME/.openai_api_key" ]]; then
+        source "$HOME/.openai_api_key"
+      fi
+      export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+      alias ls='eza -al --group-directories-first' 2>/dev/null || alias ls='ls -al'
+      alias cat='bat' 2>/dev/null || true
+      eval "$(zoxide init zsh)"
+    '';
+    
+    # Let HM provide these (no OMZ copies needed)
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+  };
+
+  programs.fzf.enable = true;
+  programs.zoxide.enable = true;
+
+  # Keep starship off since p10k is the prompt
+  programs.starship.enable = false;
+
+  home.packages = with pkgs; [
+    zsh-powerlevel10k
+    eza bat fd ripgrep fzf
+    neovim tree
+    gh jq curl wget httpie
+    unzip htop
+    tmux lazygit
+  ];
+
+  programs.git = {
+    enable = true;
+    userName = "YOUR_NAME";
+    userEmail = "you@example.com";
+    extraConfig = {
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      push.autoSetupRemote = true;
+    };
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  home.sessionVariables = { EDITOR = "nvim"; };
+}
+

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+log(){ echo -e "\033[1;32m[p10k-link]\033[0m $*"; }
+
+OUT_PATH="$(nix eval --raw nixpkgs#zsh-powerlevel10k.outPath)"
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+TARGET_DIR="$ZSH_CUSTOM/themes"
+
+mkdir -p "$TARGET_DIR"
+ln -sfn "$OUT_PATH/share/zsh-powerlevel10k/powerlevel10k" "$TARGET_DIR/powerlevel10k"
+
+log "Linked p10k at $TARGET_DIR/powerlevel10k"
+
