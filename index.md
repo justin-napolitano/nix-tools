@@ -1,3 +1,39 @@
++++
+title = "Nix Workstation: Declarative Dev Environment with Nix Flakes & Home Manager"
+description = "Set up a fully reproducible dev environment using Nix flakes, Home Manager, and tools like Zsh, Neovim, Node, Python, and ChatGPT CLI."
+tags = [
+    "nix",
+    "home manager",
+    "nix flakes",
+    "zsh",
+    "neovim",
+    "nodejs",
+    "python",
+    "chatgpt",
+    "dev environment",
+    "declarative",
+]
+date = "2025-11-04T13:28:58-05:00"
+categories = [
+    "Development",
+    "DevOps",
+    "Nix",
+]
+series = []
+
+[extra]
+lang = "en"
+toc = true
+comment = false
+copy = true
+outdate_alert = false
+outdate_alert_days = 120
+math = false
+mermaid = false
+featured = false
+reaction = false
++++
+
 # 🧩 Nix Workstation — Cobra’s Declarative Dev Environment
 
 A fully reproducible workstation built with **Nix flakes** and **Home Manager**.  
