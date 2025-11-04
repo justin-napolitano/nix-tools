@@ -26,11 +26,11 @@ lang = "en"
 toc = true
 comment = false
 copy = true
-outdate_alert = false
-outdate_alert_days = 120
+#outdate_alert = false
+#outdate_alert_days = 120
 math = false
 mermaid = false
-featured = false
+featured = true
 reaction = false
 +++
 
