@@ -1,71 +1,90 @@
 { config, pkgs, ... }:
+
 {
   programs.home-manager.enable = true;
   home.stateVersion = "24.05";
-
-  programs.zsh.envExtra = ''
-    export ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
-    ''; 
-
-  programs.zsh = {
+  
+  environment.sessionVariables = {
+    POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD = "true";
+    POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
+  };
+  
+   programs.zsh = {
     enable = true;
 
-    # Use OMZ but only for the common plugins; HM will provide autosuggestions/syntax-highlighting
+    # Run this BEFORE OMZ/theme loads — stops Powerlevel10k wizard.
+    initExtraFirst = ''
+      export POWERLEVEL10K_DISABLE_CONFIGURATION_WIZARD=true
+      export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+
+      # (Optional) p10k instant prompt (safe and fast).
+      [[ -r "${config.xdg.cacheHome}/p10k-instant-prompt-${(%):-%n}.zsh" ]] \
+        && source "${config.xdg.cacheHome}/p10k-instant-prompt-${(%):-%n}.zsh"
+
+      # Always source your Powerlevel10k config before OMZ runs.
+      [[ -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
+    '';
+
     oh-my-zsh = {
       enable = true;
       theme = "powerlevel10k/powerlevel10k";
-      plugins = [ "git" "fzf" "z" ];
+      plugins = [
+        "git"
+        "fzf"
+        "z"
+        "zsh-autosuggestions"
+        "zsh-syntax-highlighting"
+      ];
     };
 
-    # Use the new option (deprecation fix)
-    initContent = ''
-      if [[ -f "$HOME/.openai_api_key" ]]; then
-        source "$HOME/.openai_api_key"
-      fi
+    initExtra = ''
+      # Load OpenAI API keys if present
+      [[ -f "$HOME/.openai_api_key" ]] && source "$HOME/.openai_api_key"
+
+      # FZF defaults
       export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
       export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+      # Common aliases
       alias ls='eza -al --group-directories-first' 2>/dev/null || alias ls='ls -al'
       alias cat='bat' 2>/dev/null || true
+      alias nd='nix develop -c zsh'
+      alias ll='ls -al'
+
+      # Initialize zoxide
       eval "$(zoxide init zsh)"
     '';
-    
-    # Let HM provide these (no OMZ copies needed)
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
   };
 
-  programs.fzf.enable = true;
-  programs.zoxide.enable = true;
+  # Persist Powerlevel10k config under Home Manager control
+  home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
 
-  # Keep starship off since p10k is the prompt
-  programs.starship.enable = false;
-
+  # Handy CLI programs
   home.packages = with pkgs; [
     zsh-powerlevel10k
-    eza bat fd ripgrep fzf
-    neovim tree
-    gh jq curl wget httpie
-    unzip htop
-    tmux lazygit
+    eza
+    bat
+    fd
+    ripgrep
+    fzf
+    neovim
+    tree
+    gh
+    jq
+    curl
+    wget
+    httpie
+    unzip
+    htop
+    tmux
+    lazygit
   ];
 
-  programs.git = {
-    enable = true;
-    userName = "YOUR_NAME";
-    userEmail = "you@example.com";
-    extraConfig = {
-      init.defaultBranch = "main";
-      pull.rebase = true;
-      push.autoSetupRemote = true;
-    };
-  };
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  home.sessionVariables = { EDITOR = "nvim"; };
+  # Enable related programs
+  programs.fzf.enable = true;
+  programs.zoxide.enable = true;
+  programs.starship.enable = false;
+  programs.git.enable = true;
 }
 
