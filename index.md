@@ -1,183 +1,61 @@
-+++
-title = "Nix Workstation: Declarative Dev Environment with Nix Flakes & Home Manager"
-description = "Set up a fully reproducible dev environment using Nix flakes, Home Manager, and tools like Zsh, Neovim, Node, Python, and ChatGPT CLI."
-tags = [
-    "nix",
-    "home manager",
-    "nix flakes",
-    "zsh",
-    "neovim",
-    "nodejs",
-    "python",
-    "chatgpt",
-    "dev environment",
-    "declarative",
-]
-date = "2025-11-04T13:28:58-05:00"
-categories = [
-    "Development",
-    "DevOps",
-    "Nix",
-]
-series = []
-
-[extra]
-lang = "en"
-toc = true
-comment = false
-copy = true
-outdate_alert = false
-outdate_alert_days = 120
-math = false
-mermaid = false
-featured = false
-reaction = false
-+++
-
-# 🧩 Nix Workstation — Cobra’s Declarative Dev Environment
-
-A fully reproducible workstation built with **Nix flakes** and **Home Manager**.  
-Features:
-- Zsh + Oh-My-Zsh + Powerlevel10k
-- Autosuggestions & Syntax Highlighting
-- Neovim with lazy.nvim, Treesitter, and LSPs
-- Dev tools (Git, Bat, Eza, Fd, Ripgrep, Fzf, Tmux, Lazygit, etc.)
-- Node 22, Python 3.12, Prettier, Terraform, Docker, AWS CLI
-- ChatGPT CLI alias (`chat`) via `npx`
-- Direnv + Flakes + Home Manager integration
-
+---
+slug: "github-nix-tools"
+title: "nix-tools"
+repo: "justin-napolitano/nix-tools"
+githubUrl: "https://github.com/justin-napolitano/nix-tools"
+generatedAt: "2025-11-23T09:20:55.183713Z"
+source: "github-auto"
 ---
 
-## 🚀 Quick Start on a New Machine
 
-1. **Install Nix**
-   ```bash
-   sh <(curl -L https://nixos.org/nix/install) --no-daemon
-   mkdir -p ~/.config/nix
-   echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-   ```
+# Nix Workstation: A Declarative Development Environment
 
-2. **Clone this repo**
-   ```bash
-   git clone https://github.com/YOURUSERNAME/nix-tools.git
-   cd nix-tools
-   ```
+This project establishes a reproducible and declarative development environment using Nix flakes and Home Manager. It addresses the common problem of environment drift and complexity in managing development tools, shells, and editors across machines.
 
-3. **Activate Home Manager**
-   ```bash
-   nix run home-manager/master -- switch --flake .#cobra@linux
-   ```
+## Motivation
 
-4. **Start your new shell**
-   ```bash
-   exec zsh
-   ```
-   Powerlevel10k will open its first-time setup wizard.
+Developers frequently face inconsistencies in their local environments due to manual configuration, version mismatches, and ad hoc installations. This leads to productivity loss and bugs that are hard to reproduce. The approach here leverages Nix's declarative package management and Home Manager's user environment configuration to ensure that the entire workstation setup is reproducible and version controlled.
 
----
+## Problem Statement
 
-## 🧠 Development Shell
+Maintaining a consistent development environment that includes shell configurations, language runtimes, editor plugins, and CLI tools is challenging. Manual setup is error-prone and not easily portable. Traditional dotfiles repositories lack strong guarantees about dependencies and versions.
 
-Enter your pinned dev environment:
-```bash
-nix develop
-```
+## Implementation Details
 
-Inside you’ll find:
-- Node 22, npm, and pip
-- Language servers (TypeScript, Python, Bash, Lua, YAML)
-- Terraform, kubectl, AWS CLI
-- Aliases and OMZ prompt
-- `chat` alias for ChatGPT CLI (via `npx`)
+- **Nix flakes** provide a reproducible and composable way to define dependencies and configurations. The `flake.nix` file pins package versions and defines inputs such as nixpkgs and Home Manager.
 
-To leave the shell:
-```bash
-exit
-```
+- **Home Manager** is used to declaratively configure user-level settings including Zsh with Oh-My-Zsh and Powerlevel10k, shell plugins (autosuggestions, syntax highlighting), and Neovim with a curated set of plugins and language servers.
 
----
+- The environment includes modern development tools such as Node.js 22, Python 3.12, Terraform, Docker, AWS CLI, and utilities like Git, Bat, Ripgrep, and Tmux.
 
-## 🔑 OpenAI API Key
+- A custom alias `chat` is provided to invoke the ChatGPT CLI via `npx`, integrating AI assistance into the shell.
 
-Create a private key file (do **not** commit this):
-```bash
-echo 'export OPENAI_API_KEY="sk-...your-key..."' > ~/.openai_api_key
-echo 'export TOKEN="$OPENAI_API_KEY"' >> ~/.openai_api_key
-chmod 600 ~/.openai_api_key
-```
+- The setup integrates Direnv with flakes and Home Manager, enabling environment variable management tied to project directories.
 
-Reload your shell:
-```bash
-exec zsh
-```
+- Scripts like `install.sh`, `nuke.sh`, and `update_home_manager` automate setup, teardown, and maintenance workflows.
 
-Test ChatGPT:
-```bash
-chat "Write a Nix expression that prints hello world"
-```
+- The Powerlevel10k prompt is configured to launch an initial setup wizard on first shell start, improving user onboarding.
 
----
+- OpenAI API key management is handled outside the repository to keep secrets secure.
 
-## ⚙️ Maintenance
+## Usage
 
-**Update all inputs (nixpkgs + Home Manager):**
-```bash
-nix flake update
-git add flake.lock
-git commit -m "update nixpkgs + home-manager"
-```
+The user installs Nix with flakes enabled, clones the repository, and activates the Home Manager configuration using the provided `nix run` command. Starting a new shell applies the environment settings.
 
-**Re-apply configuration:**
-```bash
-nix run home-manager/master -- switch --flake .#cobra@linux
-```
+A pinned development shell can be entered with `nix develop`, which provides language runtimes and tooling isolated from the host system.
 
----
+## Practical Considerations
 
-## 🧹 Troubleshooting
+- The declarative approach simplifies onboarding new machines and reduces configuration drift.
 
-| Issue | Fix |
-|-------|-----|
-| `powerlevel10k not found` | Run `make link-p10k` or re-apply HM |
-| `direnv conflict` | Remove old profile installs: `nix profile remove direnv nix-direnv` |
-| `terraform unfree error` | `allowUnfree = true` already set in flake |
-| ChatGPT CLI says `TOKEN` missing | Ensure both `OPENAI_API_KEY` and `TOKEN` are exported |
+- Using Nix flakes ensures reproducible builds and easy updates via `nix flake update`.
 
----
+- The modular structure (dotfiles, home configs, scripts) allows for easy customization and extension.
 
-## 💡 Tips
+- The project assumes a Linux environment; cross-platform support is a potential future enhancement.
 
-- `nd` alias → opens zsh in dev shell (`nix develop -c zsh`)
-- `nix fmt` → formats your flake
-- `nix flake show` → inspect available outputs
-- `home-manager news` → view Home Manager changelog
+## Conclusion
 
----
+This repository serves as a reference implementation for managing a complex development environment declaratively. It combines Nix flakes and Home Manager to provide a robust, reproducible, and maintainable workstation setup that can be extended and adapted as needed.
 
-## 🧰 Stack Summary
-
-| Component | Managed by | Notes |
-|------------|-------------|-------|
-| Shell | Home Manager | Zsh + OMZ + p10k |
-| Editor | Home Manager | Neovim (lazy.nvim + LSPs) |
-| CLIs | Home Manager | Git, Eza, Bat, Fzf, Ripgrep, etc. |
-| Languages | DevShell | Node 22, Python 3.12 |
-| AI | Alias | `chat` → ChatGPT CLI |
-| Config | Flake | One file (`flake.nix`) = entire setup |
-
----
-
-### 🔒 Reproducibility
-Everything except your API key is declarative.  
-To recreate this environment anywhere:
-
-```bash
-curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
-echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-git clone https://github.com/YOURUSERNAME/nix-tools.git
-cd nix-tools
-nix run home-manager/master -- switch --flake .#cobra@linux
-exec zsh
-```
-
-Enjoy your reproducible dev environment ⚙️💀
+Future work includes expanding platform support, enriching tooling configurations, and improving automation around secrets management and onboarding.
