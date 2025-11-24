@@ -1,12 +1,28 @@
 ---
-slug: "github-nix-tools"
-title: "nix-tools"
-repo: "justin-napolitano/nix-tools"
-githubUrl: "https://github.com/justin-napolitano/nix-tools"
-generatedAt: "2025-11-23T09:20:55.183713Z"
-source: "github-auto"
+slug: github-nix-tools
+title: Declarative Development Environment with Nix Flakes and Home Manager
+repo: justin-napolitano/nix-tools
+githubUrl: https://github.com/justin-napolitano/nix-tools
+generatedAt: '2025-11-23T09:20:55.183713Z'
+source: github-auto
+summary: >-
+  Reference implementation of a reproducible workstation setup using Nix flakes, Home Manager, and
+  modern development tools on Linux.
+tags:
+  - nix
+  - home-manager
+  - nix-flakes
+  - linux
+  - dev-environment
+  - dotfiles
+seoPrimaryKeyword: nix flakes
+seoSecondaryKeywords:
+  - home manager
+  - declarative environment
+  - development workstation
+  - linux
+seoOptimized: true
 ---
-
 
 # Nix Workstation: A Declarative Development Environment
 
@@ -59,3 +75,4 @@ A pinned development shell can be entered with `nix develop`, which provides lan
 This repository serves as a reference implementation for managing a complex development environment declaratively. It combines Nix flakes and Home Manager to provide a robust, reproducible, and maintainable workstation setup that can be extended and adapted as needed.
 
 Future work includes expanding platform support, enriching tooling configurations, and improving automation around secrets management and onboarding.
+
