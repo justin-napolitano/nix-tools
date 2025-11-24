@@ -22,6 +22,12 @@ seoSecondaryKeywords:
   - development workstation
   - linux
 seoOptimized: true
+topicFamily: devtools
+topicFamilyConfidence: 0.95
+topicFamilyNotes: >-
+  The post is about declarative development environment setup using Nix flakes and Home Manager,
+  focusing on reproducible workstation setup, shell and editor configuration, and development
+  tooling, which aligns closely with the 'Devtools' family description and example slugs.
 ---
 
 # Nix Workstation: A Declarative Development Environment
@@ -75,4 +81,5 @@ A pinned development shell can be entered with `nix develop`, which provides lan
 This repository serves as a reference implementation for managing a complex development environment declaratively. It combines Nix flakes and Home Manager to provide a robust, reproducible, and maintainable workstation setup that can be extended and adapted as needed.
 
 Future work includes expanding platform support, enriching tooling configurations, and improving automation around secrets management and onboarding.
+
 
