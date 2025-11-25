@@ -1,19 +1,28 @@
 ---
 slug: github-nix-tools
 id: github-nix-tools
-title: Nix Workstation — Cobra’s Declarative Dev Environment
+title: Set Up a Reproducible Development Environment with Nix
 repo: justin-napolitano/nix-tools
 githubUrl: https://github.com/justin-napolitano/nix-tools
 generatedAt: '2025-11-24T21:35:44.486Z'
 source: github-auto
 summary: >-
-  A fully reproducible development workstation built with Nix flakes and Home
-  Manager. This setup provides a consistent, declarative environment for shell,
-  editor, and essential development tools.
-tags: []
-seoPrimaryKeyword: ''
-seoSecondaryKeywords: []
-seoOptimized: false
+  Learn how to create a consistent development workstation using Nix flakes and
+  Home Manager for shell and essential tools.
+tags:
+  - nix
+  - home-manager
+  - zsh
+  - neovim
+seoPrimaryKeyword: nix development environment setup
+seoSecondaryKeywords:
+  - nix flakes tutorial
+  - home manager configuration
+  - zsh setup
+  - neovim plugins
+  - development shell
+  - openai api key setup
+seoOptimized: true
 topicFamily: null
 topicFamilyConfidence: null
 kind: project
