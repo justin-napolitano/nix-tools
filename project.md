@@ -7,8 +7,8 @@ githubUrl: https://github.com/justin-napolitano/nix-tools
 generatedAt: '2025-11-24T21:35:44.486Z'
 source: github-auto
 summary: >-
-  Learn how to create a consistent development workstation using Nix flakes and
-  Home Manager for shell and essential tools.
+  Learn how to create a consistent development workstation using Nix flakes and Home Manager for
+  shell and essential tools.
 tags:
   - nix
   - home-manager
@@ -23,8 +23,8 @@ seoSecondaryKeywords:
   - development shell
   - openai api key setup
 seoOptimized: true
-topicFamily: null
-topicFamilyConfidence: null
+topicFamily: devtools
+topicFamilyConfidence: 0.9
 kind: project
 entryLayout: project
 showInProjects: true
@@ -162,4 +162,5 @@ Test ChatGPT CLI:
 ```bash
 chat "Write a Nix expression that prints hello world"
 ```
+
 
