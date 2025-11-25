@@ -1,13 +1,13 @@
 ---
 slug: github-nix-tools
-title: Declarative Development Environment with Nix Flakes and Home Manager
+title: 'Nix Workstation: Declarative Development Environment Setup'
 repo: justin-napolitano/nix-tools
 githubUrl: https://github.com/justin-napolitano/nix-tools
 generatedAt: '2025-11-23T09:20:55.183713Z'
 source: github-auto
 summary: >-
-  Reference implementation of a reproducible workstation setup using Nix flakes, Home Manager, and
-  modern development tools on Linux.
+  Establish a reproducible development environment using Nix flakes and Home
+  Manager to manage tools and configurations across machines.
 tags:
   - nix
   - home-manager
@@ -15,19 +15,27 @@ tags:
   - linux
   - dev-environment
   - dotfiles
-seoPrimaryKeyword: nix flakes
-seoSecondaryKeywords:
+  - nix flakes
   - home manager
-  - declarative environment
-  - development workstation
-  - linux
+  - development environment
+  - configuration management
+seoPrimaryKeyword: nix workstation setup
+seoSecondaryKeywords:
+  - declarative development environment
+  - nix flakes tutorial
+  - home manager configuration
+  - environment drift
+  - development tools management
 seoOptimized: true
 topicFamily: devtools
 topicFamilyConfidence: 0.95
 topicFamilyNotes: >-
-  The post is about declarative development environment setup using Nix flakes and Home Manager,
-  focusing on reproducible workstation setup, shell and editor configuration, and development
-  tooling, which aligns closely with the 'Devtools' family description and example slugs.
+  The post is about declarative development environment setup using Nix flakes
+  and Home Manager, focusing on reproducible workstation setup, shell and editor
+  configuration, and development tooling, which aligns closely with the
+  'Devtools' family description and example slugs.
+kind: project
+id: github-nix-tools
 ---
 
 # Nix Workstation: A Declarative Development Environment
